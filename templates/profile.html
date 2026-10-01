@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Профиль {{ uid }}</title>
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: 'Georgia', 'Times New Roman', serif;
+                min-height: 100vh;
+                padding: 60px 24px;
+                background: radial-gradient(ellipse at top, #1b1b22 0%, #0a0a0e 60%, #000 100%);
+                color: #b8b2a4;
+                position: relative;
+                overflow-x: hidden;
+            }
+
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background:
+                    radial-gradient(circle at 50% 0%, rgba(120, 90, 160, 0.18), transparent 55%),
+                    radial-gradient(circle at 20% 80%, rgba(60, 40, 90, 0.2), transparent 55%),
+                    radial-gradient(circle at 80% 70%, rgba(90, 30, 30, 0.15), transparent 55%);
+                pointer-events: none;
+                animation: flicker 6s ease-in-out infinite alternate;
+                z-index: 0;
+            }
+
+            @keyframes flicker {
+                0% {
+                    opacity: 0.85;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0.9;
+                }
+            }
+
+            main {
+                position: relative;
+                z-index: 1;
+                width: 100%;
+                max-width: 640px;
+                margin: 0 auto;
+                padding: 46px 38px 38px;
+                background: linear-gradient(180deg, #15131a, #0e0c12);
+                border: 1px solid #2e2836;
+                border-radius: 4px;
+                box-shadow:
+                    0 0 0 1px #000,
+                    0 0 50px rgba(120, 90, 160, 0.18),
+                    inset 0 0 60px rgba(0, 0, 0, 0.9);
+                color: #b8b2a4;
+            }
+
+            main::before {
+                content: '✠';
+                position: absolute;
+                top: -16px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 34px;
+                height: 34px;
+                display: grid;
+                place-items: center;
+                background: #0e0c12;
+                border: 1px solid #3a3246;
+                border-radius: 50%;
+                font-size: 1rem;
+                color: #a89bc4;
+                box-shadow: 0 0 20px rgba(120, 90, 160, 0.5);
+            }
+
+            h1 {
+                font-family: 'Georgia', serif;
+                font-size: 1.6rem;
+                font-weight: 700;
+                letter-spacing: 0.22em;
+                text-transform: uppercase;
+                text-align: center;
+                margin-bottom: 12px;
+                color: #d8d2c2;
+                text-shadow: 0 0 20px rgba(120, 90, 160, 0.4);
+            }
+
+            h1::after {
+                content: '— ❦ —';
+                display: block;
+                font-size: 0.9rem;
+                letter-spacing: 0.3em;
+                margin-top: 14px;
+                margin-bottom: 26px;
+                color: #6a5f82;
+            }
+
+            h3 {
+                font-family: 'Georgia', serif;
+                font-size: 0.85rem;
+                font-weight: 700;
+                letter-spacing: 0.28em;
+                text-transform: uppercase;
+                color: #a89bc4;
+                margin-bottom: 18px;
+                text-align: center;
+            }
+
+            .card {
+                position: relative;
+                padding: 22px 4px 26px;
+                margin-bottom: 22px;
+                border-top: 1px solid #2e2836;
+                border-bottom: 1px solid #2e2836;
+            }
+
+            .card:first-of-type {
+                border-top: none;
+            }
+
+            .card p {
+                line-height: 1.7;
+                font-size: 0.95rem;
+                color: #b8b2a4;
+            }
+            .card p + p {
+                margin-top: 10px;
+            }
+
+            .card b {
+                font-style: normal;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                font-size: 0.7rem;
+                color: #7a6f8a;
+                margin-right: 8px;
+            }
+
+            .badge {
+                display: inline-block;
+                padding: 4px 12px;
+                border-radius: 2px;
+                font-family: 'Georgia', serif;
+                font-size: 0.75rem;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                font-weight: 700;
+            }
+
+            .hit {
+                background: rgba(120, 160, 120, 0.12);
+                color: #a8c8a8;
+                border: 1px solid rgba(168, 200, 168, 0.4);
+                box-shadow: 0 0 18px rgba(120, 200, 120, 0.25);
+            }
+
+            .read {
+                background: rgba(200, 160, 100, 0.1);
+                color: #d8b878;
+                border: 1px solid rgba(216, 184, 120, 0.4);
+                box-shadow: 0 0 18px rgba(200, 160, 80, 0.25);
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            ul li {
+                position: relative;
+                padding: 10px 0 10px 22px;
+                border-bottom: 1px solid #1f1b26;
+                font-style: italic;
+                font-size: 0.92rem;
+                color: #c8c2b4;
+            }
+
+            ul li::before {
+                content: '❧';
+                position: absolute;
+                left: 0;
+                top: 10px;
+                color: #6a5f82;
+                font-style: normal;
+            }
+
+            ul li:last-child {
+                border-bottom: none;
+            }
+
+            a {
+                color: #a89bc4;
+                text-decoration: none;
+                transition:
+                    color 0.3s,
+                    text-shadow 0.3s;
+            }
+
+            a:hover {
+                color: #d8d2c2;
+                text-shadow: 0 0 14px rgba(168, 155, 196, 0.7);
+            }
+
+            .back-link {
+                display: block;
+                text-align: center;
+                margin-bottom: 22px;
+                font-size: 0.8rem;
+                letter-spacing: 0.22em;
+                text-transform: uppercase;
+                color: #7a6f8a;
+            }
+
+            .footer-note {
+                text-align: center;
+                font-style: italic;
+                font-size: 0.85rem;
+                color: #7a6f8a;
+                margin-top: 20px;
+                line-height: 1.7;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <a href="/" class="back-link">← Назад к списку</a>
+            <h1>Профиль {{ uid }}</h1>
+
+            <div class="card">
+                <p>
+                    <b>Источник данных:</b>
+                    <span class="badge {% if origin == 'CACHE' %}hit{% else %}read{% endif %}">
+                        {{ origin }}
+                    </span>
+                </p>
+                <p><b>TTL кэша:</b> {{ ttl }} сек.</p>
+                <p><b>Данные:</b> {{ payload }}</p>
+            </div>
+
+            <div class="card">
+                <h3>История (List, максимум {{ 12 }})</h3>
+                {% if events %}
+                <ul>
+                    {% for e in events %}
+                    <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Пока пусто.</p>
+                {% endif %}
+            </div>
+
+            <p class="footer-note">
+                <a href="/u/{{ uid }}">🔄 Обновить</a> — первый раз <b>REDIS-HASH</b>, далее
+                <b>CACHE</b>.<br />
+                <b>Лимит:</b> не более 6 запросов / 90 сек. на профиль (SET NX + INCR)
+            </p>
+        </main>
+    </body>
+</html>
