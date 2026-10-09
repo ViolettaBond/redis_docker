@@ -5,17 +5,13 @@ from flask import Flask, request, redirect, url_for, render_template
 
 app = Flask(__name__)
 
-# Сервис redis из docker-compose
 store = redis.Redis(host='redis', port=6379, db=0)
 
-# Параметры
 PROFILE_CACHE_SEC = 45
 LOG_MAX = 12
 THROTTLE_MAX = 6
 THROTTLE_SEC = 90
 
-
-# ---------- Внутренние помощники ----------
 
 def write_log(uid, text):
     """Пишем событие в историю пользователя и обрезаем до LOG_MAX."""
@@ -50,7 +46,6 @@ def read_counter(metric):
     return store.pfcount(f"hll:{metric}")
 
 
-# ---------- Маршруты ----------
 
 @app.route('/')
 def home():
@@ -58,7 +53,6 @@ def home():
     profiles = []
     for raw in store.scan_iter("u:*"):
         name = raw.decode()
-        # интересуют только ключи вида u:<digits>
         tail = name.split(":", 1)[1] if ":" in name else ""
         if tail.isdigit():
             h = store.hgetall(raw)
@@ -68,7 +62,6 @@ def home():
                 "email": h.get(b"email", b"").decode(),
             })
 
-    # сортируем по числовому uid — стабильный вывод
     profiles.sort(key=lambda p: int(p["uid"]))
 
     return render_template(
@@ -88,7 +81,6 @@ def create_profile():
     if not name or not email:
         return redirect(url_for("home"))
 
-    # атомарно получаем следующий uid
     uid = store.incr("users:seq")
     ukey = f"u:{uid}"
 
